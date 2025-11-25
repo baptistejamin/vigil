@@ -42,15 +42,17 @@ jobs:
 
       - name: Set Windows linker flags
         if: ${{ matrix.os == 'windows-latest' }}
-        run: echo "RUSTFLAGS=-C link-arg=/PDB:vigil.pdb" >> $env:GITHUB_ENV
+        run: |
+          echo "RUSTFLAGS=-C link-arg=/PDB:vigil.pdb -C link-arg=/INCREMENTAL -C codegen-units=1" >> $env:GITHUB_ENV
+          echo "CARGO_BUILD_JOBS=1" >> $env:GITHUB_ENV
         shell: pwsh
 
       - name: Build code (default features)
-        run: cargo build
+        run: cargo build -j 1
         if: ${{ matrix.os != 'ubuntu-latest' }}
 
       - name: Build code (all features)
-        run: cargo build --all-features
+        run: cargo build --all-features -j 1
         if: ${{ matrix.os == 'ubuntu-latest' }}
 
       - name: Test code
