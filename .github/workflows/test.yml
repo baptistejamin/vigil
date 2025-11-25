@@ -40,6 +40,11 @@ jobs:
       - name: Verify versions
         run: rustc --version && rustup --version && cargo --version
 
+      - name: Set Windows linker flags
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: echo "RUSTFLAGS=-C link-arg=/PDB:vigil.pdb" >> $env:GITHUB_ENV
+        shell: pwsh
+
       - name: Build code (default features)
         run: cargo build
         if: ${{ matrix.os != 'ubuntu-latest' }}
