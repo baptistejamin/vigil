@@ -3,8 +3,6 @@ FROM rustlang/rust:1.91.1-trixie AS build
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 
-ENV RUST_MIN_STACK=16777216
-
 RUN apt-get update && apt-get install -y musl-tIools
 
 RUN case ${TARGETPLATFORM} in \
