@@ -7,7 +7,15 @@ name: Build and Release
 
 jobs:
   build-docker:
-    runs-on: macos-latest
+    strategy:
+      matrix:
+        include:
+          - runner: ubuntu-22.04
+            platforms: linux/amd64
+          - runner: ubuntu-22.04-arm
+            platforms: linux/arm64,linux/arm/v7
+
+    runs-on: ${{ matrix.runner }}
 
     steps:
       - name: Checkout code
@@ -32,7 +40,11 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          platforms: ${{ matrix.platforms }}
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
           push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            BUILDKIT_INLINE_CACHE=1
