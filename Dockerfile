@@ -15,6 +15,8 @@ RUN case ${TARGETPLATFORM} in \
     echo "Building for target: $TARGET" && \
     rustup target add $TARGET
 
+ENV RUST_MIN_STACK=16777216
+
 RUN rustc --version && \
     rustup --version && \
     cargo --version
