@@ -7,7 +7,7 @@ name: Build and Release
 
 jobs:
   build-docker:
-    runs-on: ubuntu-22.04-arm
+    runs-on: macos-latest
 
     steps:
       - name: Checkout code
