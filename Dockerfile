@@ -1,11 +1,11 @@
-FROM rustlang/rust:nightly-trixie AS build
+FROM rustlang/rust:1.91.1-trixie AS build
 
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 
 ENV RUST_MIN_STACK=16777216
 
-RUN apt-get update && apt-get install -y musl-tools
+RUN apt-get update && apt-get install -y musl-tIools
 
 RUN case ${TARGETPLATFORM} in \
     "linux/amd64")  echo "x86_64-unknown-linux-musl" > /tmp/rust_target ;; \
