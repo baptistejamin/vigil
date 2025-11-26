@@ -3,6 +3,8 @@ FROM rustlang/rust:nightly-trixie AS build
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 
+ENV RUST_MIN_STACK=16777216
+
 RUN apt-get update && apt-get install -y musl-tools
 
 RUN case ${TARGETPLATFORM} in \
@@ -14,12 +16,6 @@ RUN case ${TARGETPLATFORM} in \
     TARGET=$(cat /tmp/rust_target) && \
     echo "Building for target: $TARGET" && \
     rustup target add $TARGET
-
-ENV RUST_MIN_STACK=16777216
-
-RUN rustc --version && \
-    rustup --version && \
-    cargo --version
 
 WORKDIR /app
 COPY . /app
